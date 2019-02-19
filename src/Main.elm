@@ -1,20 +1,23 @@
 module Main exposing (..)
 
 import Browser
-import Html exposing (Html, text, div, h1, img)
-import Html.Attributes exposing (src)
-
+import Html exposing (Html, text, div, h1, textarea, input)
+import Html.Attributes exposing (type_, value)
+import Html.Events exposing (onInput)
 
 ---- MODEL ----
 
 
 type alias Model =
-    {}
+    { text : String
+    , results: Maybe (List String) }
 
 
 init : ( Model, Cmd Msg )
 init =
-    ( {}, Cmd.none )
+    ( { text = ""
+        , results = Nothing
+      }, Cmd.none )
 
 
 
@@ -22,12 +25,16 @@ init =
 
 
 type Msg
-    = NoOp
+    = TextChange String
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    ( model, Cmd.none )
+    case msg of
+
+        TextChange text ->
+            ( { model | text = text }, Cmd.none )
+
 
 
 
@@ -37,11 +44,17 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ img [ src "/logo.svg" ] []
-        , h1 [] [ text "Your Elm App is working!" ]
+        [ h1 [] [ text "Miks – Create random mixes of people" ]
+         , textarea [ value model.text, onInput TextChange ][]
+         , div [][ input [ type_ "submit", value "Submit" ][]]
+         , viewResults model.results
         ]
 
-
+viewResults: Maybe (List String) -> Html msg
+viewResults results =
+    case results of
+        Just(list) -> div [] [text "result"]
+        _ -> div [] [text "nada"]
 
 ---- PROGRAM ----
 
