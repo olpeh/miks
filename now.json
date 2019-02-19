@@ -1,0 +1,17 @@
+{
+    "version": 2,
+    "public": true,
+    "name": "miks",
+    "alias": [
+        "miks.now.sh"
+    ],
+    "builds": [
+        {
+            "src": "package.json",
+            "use": "@now/static-build",
+            "config": {
+                "distDir": "build"
+            }
+        }
+    ]
+}
