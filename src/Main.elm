@@ -4,6 +4,9 @@ import Browser
 import Html exposing (Html, div, h1, input, text, textarea)
 import Html.Attributes exposing (placeholder, type_, value)
 import Html.Events exposing (onClick, onInput, onSubmit)
+import Random
+import Random.List
+import Task exposing (Task)
 
 
 
@@ -20,14 +23,14 @@ placeholderContent =
 
 type alias Model =
     { text : String
-    , results : Maybe (List String)
+    , results : List String
     }
 
 
 init : ( Model, Cmd Msg )
 init =
     ( { text = placeholderContent
-      , results = Nothing
+      , results = []
       }
     , Cmd.none
     )
@@ -40,6 +43,7 @@ init =
 type Msg
     = TextChange String
     | Submit
+    | Results (List String)
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -49,15 +53,19 @@ update msg model =
             ( { model | text = text }, Cmd.none )
 
         Submit ->
-            ( { model | results = mapInputToResults model.text }, Cmd.none )
+            ( model
+            , Random.generate Results (mapInputToResults model.text)
+            )
+
+        Results results ->
+            ( { model | results = results }, Cmd.none )
 
 
-mapInputToResults : String -> Maybe (List String)
-mapInputToResults input =
-    input
+mapInputToResults : String -> Random.Generator (List String)
+mapInputToResults text =
+    text
         |> String.split ","
-        |> List.sort
-        |> Just
+        |> Random.List.shuffle
 
 
 
@@ -74,18 +82,13 @@ view model =
         ]
 
 
-viewResults : Maybe (List String) -> Html msg
+viewResults : List String -> Html msg
 viewResults results =
-    case results of
-        Just list ->
-            div []
-                [ list
-                    |> List.map viewResult
-                    |> div []
-                ]
-
-        _ ->
-            div [] [ text "Not implemented" ]
+    div []
+        [ results
+            |> List.map viewResult
+            |> div []
+        ]
 
 
 viewResult : String -> Html msg
