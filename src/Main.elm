@@ -14,7 +14,7 @@ import Task exposing (Task)
 
 
 placeholderContent =
-    "John, Jane, Jack, Jill, Jason, James"
+    "John,Jane,Jack,Jill,Jason,James,Jameson,Jamie,Jamison,Jamy,Jan,Jancis,Jane,Janet,Janetta,Janette,Janice,Janicia,Janie,Janina"
 
 
 
