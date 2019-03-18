@@ -14,7 +14,7 @@ import Task exposing (Task)
 
 
 placeholderContent =
-    "John,Jane,Jack,Jill,Jason,James,Jameson,Jamie,Jamison,Jamy,Jan,Jancis,Jane,Janet,Janetta,Janette,Janice,Janicia,Janie,Janina"
+    "John,Jane,Jack,Jill,Jason,James,Jameson,Jamie,Jamison,Jamy,Jan,Jancis,Jane,Janet,Janetta,Janice,Janie,Janina"
 
 
 
@@ -24,7 +24,7 @@ placeholderContent =
 type alias Model =
     { text : String
     , persons : List String
-    , teamCount : Int
+    , teamSize : Int
     }
 
 
@@ -32,7 +32,7 @@ init : ( Model, Cmd Msg )
 init =
     ( { text = placeholderContent
       , persons = []
-      , teamCount = 2
+      , teamSize = 6
       }
     , Cmd.none
     )
@@ -44,7 +44,7 @@ init =
 
 type Msg
     = TextChange String
-    | TeamCountChange String
+    | TeamSizeChange String
     | Submit
     | Shuffled (List String)
 
@@ -55,10 +55,10 @@ update msg model =
         TextChange text ->
             ( { model | text = text }, Cmd.none )
 
-        TeamCountChange str ->
+        TeamSizeChange str ->
             case String.toInt str of
                 Just int ->
-                    ( { model | teamCount = int }, Cmd.none )
+                    ( { model | teamSize = int }, Cmd.none )
 
                 _ ->
                     ( model, Cmd.none )
@@ -89,9 +89,9 @@ view model =
     div []
         [ h1 [] [ text "Miks –\u{00A0}Create random teams of a group of people" ]
         , textarea [ value model.text, onInput TextChange, placeholder placeholderContent ] []
-        , div [] [ input [ type_ "number", value (String.fromInt model.teamCount), onInput TeamCountChange ] [] ]
+        , div [] [ input [ type_ "number", value (String.fromInt model.teamSize), onInput TeamSizeChange ] [] ]
         , div [] [ input [ type_ "submit", value "Shuffle!", onClick Submit ] [] ]
-        , div [] (List.map viewTeam <| split (List.length model.persons // model.teamCount) model.persons)
+        , div [] (List.map viewTeam <| split model.teamSize model.persons)
         ]
 
 
