@@ -9,4 +9,4 @@ Create random teams of a group of people
 
 ## Releasing
 
-Run `yarn release`
+Git push – Zeit will automatically deploy to miks.now.sh
