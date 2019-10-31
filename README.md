@@ -1,6 +1,6 @@
 # miks
 
-TODO: description
+Create random teams of a group of people
 
 ## Development
 
