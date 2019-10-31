@@ -92,7 +92,7 @@ view model =
         , textarea [ id "name-textarea", value model.text, onInput TextChange, placeholder placeholderContent, autofocus True, rows 4, cols 80 ] []
         , div []
             [ label [ for "team-size" ] [ text "Desired team size" ]
-            , input [ id "team-size", type_ "number", value (String.fromInt model.teamSize), onInput TeamSizeChange, min "1" ] []
+            , input [ id "team-size", type_ "number", value (String.fromInt model.teamSize), onInput TeamSizeChange, Html.Attributes.min "1" ] []
             ]
         , div [] [ input [ type_ "submit", value "Shuffle!", onClick Submit ] [] ]
         , div [] (List.map viewTeam <| split model.teamSize model.persons)
